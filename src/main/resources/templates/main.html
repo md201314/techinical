@@ -63,7 +63,13 @@
     $("#downloadExcel").click(function() {
         var startTime = $("#startTime").val();//获得参数的值
         var endTime = $("#endTime").val();
-        $.ajax({
+        var url = "/excel/download?startTime="+startTime+"&endTime="+endTime;
+        var $a = $("<a>");
+        $a.attr("href", url);
+        $("body").append($a);
+        $a[0].click();
+        $a.remove();
+        /*$.ajax({
             type:'get',
             url:"/excel/download",
             contentType:"application/vnd.ms-excel",
@@ -80,7 +86,7 @@
                     //window.location.href="/main";
                 }
             }
-        });
+        });*/
     });
 </script>
 </body>
