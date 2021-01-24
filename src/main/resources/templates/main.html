@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Bootstrap core CSS Webjars形式引入-->
+    <link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
+</head>
+<body class="">
+<ul class="pager">
+    <li class="">
+        <form class="form-inline" role="form" th:action="@{/main/getAttendanceByTime}" th:object="${attendanceDatetime}" method="post">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">开始时间</div>
+                    <!--            <input class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:with="df='yyyy-MM-dd HH:mm:ss'" th:value="${#dates.format(attendanceDatetime.startTime, df)}" th:field="*{startTime}">-->
+                    <input id="startTime" class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:field="*{startTime}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">结束时间</div>
+                    <!--            <input class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:with="df='yyyy-MM-dd HH:mm:ss'" th:value="${#dates.format(attendanceDatetime.endTime, df)}" th:field="*{endTime}">-->
+                    <input id="endTime" class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:field="*{endTime}">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">确认</button>
+        </form>
+    </li>
+    <li class="">
+<!--        <a href="" th:href="@{/excel/download(startTime=${attendanceDatetime.startTime}&endTime=${attendanceDatetime.endTime}})}">下载</a>-->
+        <button id="downloadExcel" type="submit" class="btn btn-default">下载</button>
+    </li>
+</ul>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>用户ID</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>打卡时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${attendances}" th:class="${user.userId}? 'odd'">
+        <td th:text="${user.userId}">Onions</td>
+        <td th:text="${user.age}">18</td>
+        <td th:text="${user.gender} == '1' ? '男':'女'">男</td>
+        <td th:with="df='yyyy-MM-dd HH:mm:ss'" th:text="${#dates.format(user.dateTime, df)}">2020-12-23 09:00:00</td>
+    </tr>
+    <!--<tr th:if="${not #lists.size(attendances)}">
+        <td colspan="4">无结果数据</td>
+    </tr>-->
+    </tbody>
+</table>
+<!--<ul class="pager">
+    <li class=""><a href="#">上一页</a></li>
+    <li class=""><a href="#">下一页</a></li>
+</ul>-->
+<script>
+    $("#downloadExcel").click(function() {
+        var startTime = $("#startTime").val();//获得参数的值
+        var endTime = $("#endTime").val();
+        $.ajax({
+            type:'get',
+            url:"/excel/download",
+            contentType:"application/vnd.ms-excel",
+            data:{startTime:startTime, endTime:endTime},
+            success:function (result) {
+                var $a = $("<a>");
+                $a.attr("href", "/excel/download?startTime=2020-10-25 09:37:29&endTime=2020-11-29 09:37:29");
+                $("body").append($a);
+                $a[0].click();
+                $a.remove();
+                //window.open("${pageContext.request.contextPath}/excel/download?startTime="+${startTime}+"&endTime="+${endTime});
+                if(result ==="true"){
+                    console.log("下载成功")
+                    //window.location.href="/main";
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.architect.techinical.controller.excel;
 
+import com.architect.techinical.common.util.UdfDateTime;
+import com.architect.techinical.controller.excel.model.ExcelModePre;
 import com.architect.techinical.dao.Repository.AttendanceRepository;
 import com.architect.techinical.service.excel.ExcelService;
 import org.apache.log4j.Logger;
@@ -27,12 +29,14 @@ public class ExcelController {
 
     @GetMapping(path = "/download")
     public @ResponseBody
-    String downLoad(@RequestParam Long startTime, @RequestParam Long endTime, HttpServletResponse response) {
+    String downLoad(@RequestParam String startTime, @RequestParam String endTime, HttpServletResponse response) {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
-        String fileName = UUID.randomUUID().toString() + ".xlsx";
+        String fileName = UUID.randomUUID().toString();
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
-        List<Object> result = attendanceRepository.findEmployeeAttendInfoByTimestampBetween(startTime, endTime);
+        Long _startTime = UdfDateTime.dateTimeWithSecond2Timestamp(startTime);
+        Long _endTime = UdfDateTime.dateTimeWithSecond2Timestamp(endTime);
+        List<Object> result = attendanceRepository.findEmployeeAttendInfoByTimestampBetween(_startTime, _endTime);
         List<ExcelModePre> excelDataPre = new ArrayList<>(result.size());
         for (Object o : result) {
             Object[] obj = (Object[]) o;
@@ -46,50 +50,13 @@ public class ExcelController {
         try {
             excelService.write(excelDataPre, response.getOutputStream());
             logger.warn("下载成功！");
-            return "下载成功！";
+            return "true";
         } catch (IOException e) {
             e.printStackTrace();
             logger.warn("下载失败！");
-            return "下载失败！";
+            return "false";
         }
     }
 
-    private class ExcelModePre {
-        private String userId;
-        private Byte age;
-        private Character gender;
-        private Long dateTime;
 
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public Byte getAge() {
-            return age;
-        }
-
-        public void setAge(Byte age) {
-            this.age = age;
-        }
-
-        public Character getGender() {
-            return gender;
-        }
-
-        public void setGender(Character gender) {
-            this.gender = gender;
-        }
-
-        public Long getDateTime() {
-            return dateTime;
-        }
-
-        public void setDateTime(Long dateTime) {
-            this.dateTime = dateTime;
-        }
-    }
 }
