@@ -9,31 +9,34 @@
     <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.js}"></script>
 </head>
 <body class="">
-<ul class="pager">
-    <li class="">
-        <form class="form-inline" role="form" th:action="@{/main/getAttendanceByTime}" th:object="${attendanceDatetime}" method="post">
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-addon">开始时间</div>
-                    <!--            <input class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:with="df='yyyy-MM-dd HH:mm:ss'" th:value="${#dates.format(attendanceDatetime.startTime, df)}" th:field="*{startTime}">-->
-                    <input id="startTime" class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:field="*{startTime}">
+<div class="container" style="margin-left: 1px">
+    <div class="row">
+        <div class="col-md-7">
+            <form class="form-inline" role="form" th:action="@{/main/getAttendanceByTime}" th:object="${attendanceDatetime}" method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">开始时间</div>
+                        <!--            <input class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:with="df='yyyy-MM-dd HH:mm:ss'" th:value="${#dates.format(attendanceDatetime.startTime, df)}" th:field="*{startTime}">-->
+                        <input id="startTime" class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:field="*{startTime}">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-addon">结束时间</div>
-                    <!--            <input class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:with="df='yyyy-MM-dd HH:mm:ss'" th:value="${#dates.format(attendanceDatetime.endTime, df)}" th:field="*{endTime}">-->
-                    <input id="endTime" class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:field="*{endTime}">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">结束时间</div>
+                        <!--            <input class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:with="df='yyyy-MM-dd HH:mm:ss'" th:value="${#dates.format(attendanceDatetime.endTime, df)}" th:field="*{endTime}">-->
+                        <input id="endTime" class="form-control" type="text" placeholder="yyyy-MM-dd HH:mm:ss" th:field="*{endTime}">
+                    </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn-default">确认</button>
-        </form>
-    </li>
-    <li class="">
-<!--        <a href="" th:href="@{/excel/download(startTime=${attendanceDatetime.startTime}&endTime=${attendanceDatetime.endTime}})}">下载</a>-->
-        <button id="downloadExcel" type="submit" class="btn btn-default">下载</button>
-    </li>
-</ul>
+                <button type="submit" class="btn btn-default">确认</button>
+            </form>
+        </div>
+        <div class="col-md-3">
+            <!--        <a href="" th:href="@{/excel/download(startTime=${attendanceDatetime.startTime}&endTime=${attendanceDatetime.endTime}})}">下载</a>-->
+            <button id="downloadExcel" type="submit" class="btn btn-default">下载</button>
+        </div>
+    </div>
+
+</div>
 <table class="table table-striped table-hover">
     <thead>
     <tr>

@@ -9,8 +9,8 @@ public class Employee {
     @Id
     private String userId;
     private Byte age;
-    @Column(columnDefinition = "byte default 1")
-    private Byte gender;
+    //@Column(columnDefinition = "byte default 1")
+    private Character gender;
 
     public String getUserId() {
         return userId;
@@ -28,11 +28,11 @@ public class Employee {
         this.age = age;
     }
 
-    public Byte getGender() {
+    public Character getGender() {
         return gender;
     }
 
-    public void setGender(Byte gender) {
+    public void setGender(Character gender) {
         this.gender = gender;
     }
 }
